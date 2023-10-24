@@ -2,4 +2,4 @@
 # postinst script
 # see: dh_installdeb(1)
 
-echo "source /etc/bash_completion.d/bfg_completion" > /etc/profile.d/bfg_completion.sh
+echo "source /etc/bash_completion.d/bfg_completion.bash" > /etc/profile.d/bfg_completion.sh
