@@ -9,11 +9,11 @@ bfg [옵션] [파라미터]
 ```
 --clone REPO_URL: 지정한 Git 저장소를 클론합니다.
 
---find-big-files: 저장소에서 큰 파일을 찾습니다. (이 기능은 추가 구현이 필요합니다.)
+--find-big-files SIZE REPO_PATH: 지정한 크기보다 큰 파일을 저장소에서 찾습니다.
 
---remove-big-files SIZE: 지정한 크기(SIZE MB)보다 큰 파일을 저장소에서 삭제합니다.
+--remove-big-files SIZE REPO_PATH: 지정한 크기보다 큰 파일을 저장소에서 삭제합니다.
 
---push: 변경 내용을 원격 저장소에 푸시합니다.
+---push REPO_PATH: 변경 내용을 원격 저장소에 푸시합니다.
 ```
 
 ### 예시
