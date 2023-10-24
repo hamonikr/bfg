@@ -58,7 +58,7 @@ fi
 while [ "$1" != "" ]; do
   case $1 in
     --clone )           shift
-                        REPO_URL=$1
+                        REPO_URL=$(echo $1 | sed 's/\.git$//').git
                         ;;
     --find-big-files )  shift
                         FIND_BIG_FILES=true
@@ -70,6 +70,8 @@ while [ "$1" != "" ]; do
                         ;;
     --push )            PUSH=true
                         ;;
+    --help )            usage
+                        ;;
     * )                 usage
   esac
   shift
@@ -78,7 +80,8 @@ done
 # Git 저장소 클론
 if [ ! -z "$REPO_URL" ]; then
   echo "Cloning repository..."
-  git clone --mirror $REPO_URL $REPO_URL.git
+  CLONE_DIR=$(basename $REPO_URL .git)
+  git clone --mirror $REPO_URL $CLONE_DIR.git
   if [ $? -ne 0 ]; then
     echo "Failed to clone repository. Exiting."
     exit 1

@@ -1,11 +1,11 @@
-# completion for bfg
+#!/bin/bash
 
-_bfg() {
+_bfg_completion() {
   local cur prev opts
   COMPREPLY=()
   cur="${COMP_WORDS[COMP_CWORD]}"
   prev="${COMP_WORDS[COMP_CWORD-1]}"
-  opts="--clone --find-big-files --remove-big-files --push"
+  opts="--clone --find-big-files --remove-big-files --push --help"
 
   if [[ ${cur} == -* ]]; then
     COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
@@ -13,4 +13,4 @@ _bfg() {
   fi
 }
 
-complete -F _bfg bfg
+complete -F _bfg_completion bfg
