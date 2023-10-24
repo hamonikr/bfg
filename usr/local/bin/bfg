@@ -24,16 +24,16 @@ usage() {
     echo "사용법: $0 [옵션] [파라미터]"
     echo "옵션:"
     echo "--clone REPO_URL: 지정한 Git 저장소를 클론합니다."
-    echo "--find-big-files SIZE: 지정한 크기보다 큰 파일을 저장소에서 찾습니다."
-    echo "--remove-big-files SIZE: 지정한 크기보다 큰 파일을 저장소에서 삭제합니다."
-    echo "--push: 변경 내용을 원격 저장소에 푸시합니다."
+    echo "--find-big-files SIZE REPO_PATH: 지정한 크기보다 큰 파일을 저장소에서 찾습니다."
+    echo "--remove-big-files SIZE REPO_PATH: 지정한 크기보다 큰 파일을 저장소에서 삭제합니다."
+    echo "--push REPO_PATH: 변경 내용을 원격 저장소에 푸시합니다."
   else
     echo "Usage: $0 [options] [parameters]"
     echo "Options:"
     echo "--clone REPO_URL: Clone the specified Git repository."
-    echo "--find-big-files SIZE: Find files larger than the specified size in the repository."
-    echo "--remove-big-files SIZE: Remove files larger than the specified size from the repository."
-    echo "--push: Push the changes to the remote repository."
+    echo "--find-big-files SIZE REPO_PATH: Find files larger than the specified size in the repository."
+    echo "--remove-big-files SIZE REPO_PATH: Remove files larger than the specified size from the repository."
+    echo "--push REPO_PATH: Push the changes to the remote repository."
   fi
   exit 1
 }
@@ -58,7 +58,7 @@ fi
 while [ "$1" != "" ]; do
   case $1 in
     --clone )           shift
-                        REPO_URL=$(echo $1 | sed 's/\.git$//').git
+                        REPO_URL=$1
                         ;;
     --find-big-files )  shift
                         FIND_BIG_FILES=true
@@ -68,11 +68,15 @@ while [ "$1" != "" ]; do
                         REMOVE_BIG_FILES=true
                         SIZE=$1
                         ;;
-    --push )            PUSH=true
+    --push )            shift
+                        PUSH=true
+                        REPO_PATH=$1
                         ;;
-    --help )            usage
-                        ;;
-    * )                 usage
+    * )                 if [ -d "$1" ]; then
+                          REPO_PATH=$1
+                        else
+                          usage
+                        fi
   esac
   shift
 done
@@ -90,22 +94,54 @@ fi
 
 # 큰 파일 찾기
 if [ "$FIND_BIG_FILES" = "true" ]; then
-  echo "Finding big files larger than ${SIZE}M..."
-  cd $REPO_URL.git || { echo "Repository path not found. Exiting."; exit 1; }
-  java -jar $BFG_JAR_PATH --strip-blobs-bigger-than ${SIZE}M --no-blob-protection .
+  if [ -z "$REPO_PATH" ]; then
+    echo "Repository path is not specified. Please specify the repository path as the last parameter."
+    exit 1
+  fi
+  cd "$REPO_PATH" || { echo "Repository path not found. Exiting."; exit 1; }
+  
+  # 지정한 경로가 Git 저장소인지 확인
+  git rev-parse --is-inside-work-tree &>/dev/null
+  if [ $? -ne 0 ]; then
+    echo "The specified path is not a Git repository. Exiting."
+    exit 1
+  fi
+  
+  echo "Finding big files larger than ${SIZE}..."
+  java -jar $BFG_JAR_PATH --strip-blobs-bigger-than ${SIZE} --no-blob-protection .
   echo "Check the above output for the list of big files."
 fi
 
 # 큰 파일 삭제
 if [ "$REMOVE_BIG_FILES" = "true" ]; then
-  echo "Removing big files..."
-  cd $REPO_URL.git || { echo "Repository path not found. Exiting."; exit 1; }
-  java -jar $BFG_JAR_PATH --strip-blobs-bigger-than ${SIZE}M .
+  if [ -z "$REPO_PATH" ]; then
+    echo "Repository path is not specified. Please specify the repository path as the last parameter."
+    exit 1
+  fi
+  cd "$REPO_PATH" || { echo "Repository path not found. Exiting."; exit 1; }
+  
+  # 지정한 경로가 Git 저장소인지 확인
+  git rev-parse --is-inside-work-tree &>/dev/null
+  if [ $? -ne 0 ]; then
+    echo "The specified path is not a Git repository. Exiting."
+    exit 1
+  fi
+  
+  echo "Removing big files larger than ${SIZE}..."
+  java -jar $BFG_JAR_PATH --strip-blobs-bigger-than ${SIZE} .
   git reflog expire --expire=now --all && git gc --prune=now --aggressive
 fi
 
 # 원격 저장소에 푸시
 if [ "$PUSH" = "true" ]; then
+  # 지정된 경로가 Git 저장소인지 확인
+  cd $REPO_PATH || { echo "Specified path not found. Exiting."; exit 1; }
+  git rev-parse --is-inside-work-tree &>/dev/null
+  if [ $? -ne 0 ]; then
+    echo "The specified directory is not a Git repository. Exiting."
+    exit 1
+  fi
+  
   echo "Pushing changes to remote..."
   git push || { echo "Failed to push changes. Exiting."; exit 1; }
 fi
