@@ -1,0 +1,7 @@
+bfg (1.0.0) stable; urgency=medium
+
+  [Kevin Kim]
+  * Build for HamoniKR
+   - binary : https://rtyley.github.io/bfg-repo-cleaner/
+
+ -- HamoniKR <pkg@hamonikr.org>  Tue, 24 Oct 2023 22:14:59 +0900

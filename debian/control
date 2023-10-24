@@ -1,0 +1,18 @@
+Source: bfg
+Section: admin
+Priority: optional
+Maintainer: HamoniKR <root@hamonikr.org>
+Build-Depends: debhelper (>= 9),
+Standards-Version: 3.9.5
+Homepage: https://www.hamonikr.org
+Vcs-Git: https://github.com/hamonikr/bfg.git
+Vcs-Browser: https://github.com/hamonikr/bfg
+
+Package: bfg
+Architecture: all
+Depends: 
+Replaces:          
+Recommends: default-jre-headless
+Description: bfg
+ This script provides various functionalities
+  for managing a Git repository.
