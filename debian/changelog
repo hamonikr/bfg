@@ -1,3 +1,10 @@
+bfg (1.0.1) stable; urgency=medium
+
+  [Kevin Kim]
+  * Update bash completion
+
+ -- HamoniKR <pkg@hamonikr.org>  Fri, 27 Oct 2023 14:14:44 +0900
+
 bfg (1.0.0) stable; urgency=medium
 
   [Kevin Kim]
