@@ -1,3 +1,10 @@
+bfg (1.0.2) stable; urgency=medium
+
+  [Kevin Kim]
+  * Removed postinst
+
+ -- HamoniKR <pkg@hamonikr.org>  Wed, 08 Nov 2023 13:41:15 +0900
+
 bfg (1.0.1) stable; urgency=medium
 
   [Kevin Kim]
