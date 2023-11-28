@@ -1,0 +1,14 @@
+#compdef _bfg bfg
+
+# zsh completion for bfg                                   -*- shell-script -*-
+_bfg() {
+    local curcontext="$curcontext" state line
+    typeset -A opt_args
+
+    _arguments -C \
+        '(- 1)--clone[Clone a repository]' \
+        '(- 1)--find-big-files[Find big files]:size (1M 5M 10M 50M 100M 500M 1G)' \
+        '(- 1)--remove-big-files[Remove big files]:size (1M 5M 10M 50M 100M 500M 1G)' \
+        '(- 1)--push[Push to remote]' \
+        '(- 1)--help[Show help]'
+}

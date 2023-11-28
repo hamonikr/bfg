@@ -1,23 +1,35 @@
-#!/bin/bash
+# bash completion for bfg                               -*- shell-script -*-
 
-_bfg_argcomplete() {
+_bfg() 
+{
     local IFS=$'\013'
     local SUPPRESS_SPACE=0
     local cur prev opts
+    _init_completion || return
+
     if compopt +o nospace 2> /dev/null; then
         SUPPRESS_SPACE=1
     fi
 
     cur="${COMP_WORDS[COMP_CWORD]}"
     prev="${COMP_WORDS[COMP_CWORD-1]}"
-    opts="--clone --find-big-files --remove-big-files --push --help"
+    opts='
+        --clone 
+        --find-big-files 
+        --remove-big-files 
+        --push 
+        --help
+    '
 
     if [[ ${prev} == "--find-big-files" || ${prev} == "--remove-big-files" ]]; then
-        COMPREPLY=( $(compgen -W "1M 5M 10M 50M 100M 500M 1G" -- ${cur}) )
+        COMPREPLY=( $(compgen -W '1M 5M 10M 50M 100M 500M 1G' -- "$cur") )
+        return 0
     elif [[ ${cur} == -* ]]; then
-        COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+        COMPREPLY=( $(compgen -W "${opts}" -- "$cur") )
+        return 0
     else
-        COMPREPLY=( $(compgen -f ${cur}) )
+        COMPREPLY=( $(compgen -f "$cur") )
+        return 0
     fi
 
     if [[ $? != 0 ]]; then
@@ -25,6 +37,7 @@ _bfg_argcomplete() {
     elif [[ $SUPPRESS_SPACE == 1 ]] && [[ "$COMPREPLY" =~ [=/:]$ ]]; then
         compopt -o nospace
     fi
-}
+} && 
+    complete -o nospace -o default -F _bfg "bfg"
 
-complete -o nospace -o default -F _bfg_argcomplete "bfg"
+# ex: ts=4 sw=4 et filetype=sh
