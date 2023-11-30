@@ -8,7 +8,9 @@ BFG Repo-Cleaner는 Git 저장소의 히스토리에서 불필요한 또는 민�
 
 주요 특징은 다음과 같습니다:
 - 속도: BFG는 git-filter-branch보다 10~720배 빠릅니다.
-- 간단함: 특정 작업에 중점을 둬서 사용하기 쉽습니다.
+- 깃 저장소를 위한 특정 작업을 사용하기 쉽습니다. (중요파일 삭제 또는 큰파일 삭제 등의 작업)
+
+![bfg](./bfg.png)
 
 ## 언제 이 프로그램을 사용해야 하나요?
 
@@ -39,9 +41,9 @@ bfg [옵션] [파라미터]
 
 --push REPO_PATH: 변경 내용을 원격 저장소에 푸시합니다.
 
---delete-files FILE_PATTERN  REPO_PATH : 저장소에서 FILE_PATTERN 에 해당하는 파일을 삭제합니다. 파일명 또는 파일명 패턴을 사용할 수 있습니다.
+--delete-files FILE  REPO_PATH : 저장소에서 FILE 에 해당하는 파일을 삭제합니다. 파일명 또는 파일명 패턴을 사용할 수 있습니다.
 
---replace-text WORD_LIST_FILE  REPO_PATH : 저장소에서 WORD_LIST_FILE 안의 단어를 찾아서 ***REMOVED*** 로 변경합니다.
+--replace-text WORD_FILE  REPO_PATH : 저장소에서 WORD_FILE 안의 단어를 찾아서 ***REMOVED*** 로 변경합니다.
 
 ```
 

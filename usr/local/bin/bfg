@@ -27,8 +27,8 @@ usage() {
     echo "--find-big-files SIZE REPO_PATH: 지정한 크기보다 큰 파일을 저장소에서 찾습니다."
     echo "--remove-big-files SIZE REPO_PATH: 지정한 크기보다 큰 파일을 저장소에서 삭제합니다."
     echo "--push REPO_PATH: 변경 내용을 원격 저장소에 푸시합니다."
-    echo "--delete-files FILE_PATTERN REPO_PATH: 저장소에서 일치하는 파일을 삭제합니다."
-    echo "--replace-text WORD_LIST_FILE REPO_PATH: 저장소에서 지정한 단어목록 파일에 있는 모든 단어를 ***REMOVED*** 로 표시합니다."    
+    echo "--delete-files FILE REPO_PATH: 저장소에서 일치하는 파일을 삭제합니다."
+    echo "--replace-text WORD_FILE REPO_PATH: 저장소에서 지정한 단어목록 파일에 있는 모든 단어를 ***REMOVED*** 로 표시합니다."    
   else
     echo "Usage: $0 [options] [parameters]"
     echo "Options:"
@@ -36,8 +36,8 @@ usage() {
     echo "--find-big-files SIZE REPO_PATH: Find files larger than the specified size in the repository."
     echo "--remove-big-files SIZE REPO_PATH: Remove files larger than the specified size from the repository."
     echo "--push REPO_PATH: Push the changes to the remote repository."
-    echo "--delete-files FILE_PATTERN REPO_PATH: Deletes files matching FILE_PATTERN in the repository."
-    echo "--replace-text WORD_LIST_FILE REPO_PATH: Replaces words found in WORD_LIST_FILE with ***REMOVED*** in the repository."
+    echo "--delete-files FILE REPO_PATH: Deletes files matching FILE_PATTERN in the repository."
+    echo "--replace-text WORD_FILE REPO_PATH: Replaces words found in WORD_LIST_FILE with ***REMOVED*** in the repository."
   fi
   exit 1
 }
