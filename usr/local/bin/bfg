@@ -172,6 +172,7 @@ if [ "$PUSH" = "true" ]; then
   cd $REPO_PATH || { echo "Specified path not found. Exiting."; exit 1; }
   git rev-parse --is-inside-work-tree &>/dev/null
   if [ $? -ne 0 ]; then
+    echo "This command must be run from the git repository directory."
     echo "The specified directory is not a Git repository. Exiting."
     exit 1
   fi

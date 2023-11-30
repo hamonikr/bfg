@@ -65,10 +65,16 @@ bfg [옵션] [파라미터]
 ./bfg --remove-big-files 100M <REPO_PATH>
 ```
 
-#### 파일명이 id_dsa 또는 id_rsa 인 파일을 삭제:
+#### 파일명이 example.txt 인 파일을 삭제:
 
 ```
-./bfg --delete-files id_{dsa,rsa} <REPO_PATH>
+./bfg --delete-files example.txt <REPO_PATH>
+```
+
+#### 파일명이 id_dsa 또는 id_rsa 인 파일을 삭제:
+삭제하고 싶은 파일을 *.py 처럼 파일명의 패턴으로 지정하는 경우에는 아래와 같이 따옴표로 묶어줍니다.
+```
+./bfg --delete-files 'id_{dsa,rsa}' <REPO_PATH>
 ```
 
 #### 지정한 password.txt 파일에 있는 단어를 찾아서 ***REMOVED*** 로 변경:
