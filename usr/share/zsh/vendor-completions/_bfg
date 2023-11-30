@@ -10,5 +10,7 @@ _bfg() {
         '(- 1)--find-big-files[Find big files]:size (1M 5M 10M 50M 100M 500M 1G)' \
         '(- 1)--remove-big-files[Remove big files]:size (1M 5M 10M 50M 100M 500M 1G)' \
         '(- 1)--push[Push to remote]' \
+        '(- 1)--delete-files[Delete files matching a pattern]:file pattern:_files' \
+        '(- 1)--replace-text[Replace text from word list file]:word list file:_files' \
         '(- 1)--help[Show help]'
 }

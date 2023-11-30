@@ -27,6 +27,8 @@ usage() {
     echo "--find-big-files SIZE REPO_PATH: 지정한 크기보다 큰 파일을 저장소에서 찾습니다."
     echo "--remove-big-files SIZE REPO_PATH: 지정한 크기보다 큰 파일을 저장소에서 삭제합니다."
     echo "--push REPO_PATH: 변경 내용을 원격 저장소에 푸시합니다."
+    echo "--delete-files FILE_PATTERN REPO_PATH: 저장소에서 일치하는 파일을 삭제합니다."
+    echo "--replace-text WORD_LIST_FILE REPO_PATH: 저장소에서 지정한 단어목록 파일에 있는 모든 단어를 ***REMOVED*** 로 표시합니다."    
   else
     echo "Usage: $0 [options] [parameters]"
     echo "Options:"
@@ -34,6 +36,8 @@ usage() {
     echo "--find-big-files SIZE REPO_PATH: Find files larger than the specified size in the repository."
     echo "--remove-big-files SIZE REPO_PATH: Remove files larger than the specified size from the repository."
     echo "--push REPO_PATH: Push the changes to the remote repository."
+    echo "--delete-files FILE_PATTERN REPO_PATH: Deletes files matching FILE_PATTERN in the repository."
+    echo "--replace-text WORD_LIST_FILE REPO_PATH: Replaces words found in WORD_LIST_FILE with ***REMOVED*** in the repository."
   fi
   exit 1
 }
@@ -68,6 +72,14 @@ while [ "$1" != "" ]; do
                         REMOVE_BIG_FILES=true
                         SIZE=$1
                         ;;
+    --delete-files )    shift
+                        DELETE_FILES=true
+                        FILE_PATTERN=$1
+                        ;;
+    --replace-text )    shift
+                        REPLACE_TEXT=true
+                        WORD_LIST_FILE=$1
+                        ;;                        
     --push )            shift
                         PUSH=true
                         REPO_PATH=$1
@@ -130,6 +142,28 @@ if [ "$REMOVE_BIG_FILES" = "true" ]; then
   echo "Removing big files larger than ${SIZE}..."
   java -jar $BFG_JAR_PATH --strip-blobs-bigger-than ${SIZE} .
   git reflog expire --expire=now --all && git gc --prune=now --aggressive
+fi
+
+# 파일 삭제
+if [ "$DELETE_FILES" = "true" ]; then
+  if [ -z "$REPO_PATH" ]; then
+    echo "Repository path not specified. Please specify the repository path as the last parameter."
+    exit 1
+  fi
+  
+  echo "Deleting files matching pattern ${FILE_PATTERN}..."
+  java -jar $BFG_JAR_PATH --delete-files ${FILE_PATTERN} ${REPO_PATH}
+fi
+
+# 텍스트 교체
+if [ "$REPLACE_TEXT" = "true" ]; then
+  if [ -z "$REPO_PATH" ] || [ -z "$WORD_LIST_FILE" ]; then
+    echo "Repository path or word list file not specified."
+    exit 1
+  fi
+
+  echo "Replacing text as per word list in ${WORD_LIST_FILE}..."
+  java -jar $BFG_JAR_PATH --replace-text ${WORD_LIST_FILE} ${REPO_PATH}
 fi
 
 # 원격 저장소에 푸시

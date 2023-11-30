@@ -37,7 +37,12 @@ bfg [옵션] [파라미터]
 
 --remove-big-files SIZE REPO_PATH: 지정한 크기보다 큰 파일을 저장소에서 삭제합니다.
 
----push REPO_PATH: 변경 내용을 원격 저장소에 푸시합니다.
+--push REPO_PATH: 변경 내용을 원격 저장소에 푸시합니다.
+
+--delete-files FILE_PATTERN  REPO_PATH : 저장소에서 FILE_PATTERN 에 해당하는 파일을 삭제합니다. 파일명 또는 파일명 패턴을 사용할 수 있습니다.
+
+--replace-text WORD_LIST_FILE  REPO_PATH : 저장소에서 WORD_LIST_FILE 안의 단어를 찾아서 ***REMOVED*** 로 변경합니다.
+
 ```
 
 ### 예시
@@ -51,19 +56,31 @@ bfg [옵션] [파라미터]
 #### 큰 파일 찾기 (예: 10MB 이상):
 
 ```
-./bfg --find-big-filess 10M <PREPO_ATH>
+./bfg --find-big-filess 10M <REPO_PATH>
 ```
 
 #### 큰 파일 삭제 (예: 100MB 이상):
 
 ```
-./bfg --remove-big-files 100M <PREPO_ATH>
+./bfg --remove-big-files 100M <REPO_PATH>
+```
+
+#### 파일명이 id_dsa 또는 id_rsa 인 파일을 삭제:
+
+```
+./bfg --delete-files id_{dsa,rsa} <REPO_PATH>
+```
+
+#### 지정한 password.txt 파일에 있는 단어를 찾아서 ***REMOVED*** 로 변경:
+
+```
+./bfg --replace-text password.txt <REPO_PATH>
 ```
 
 #### 변경 내용 원격 저장소에 푸시:
 
 ```
-./bfg --push <PREPO_ATH>
+./bfg --push <REPO_PATH>
 ```
 
 #### 모든 작업을 한 번에 수행:

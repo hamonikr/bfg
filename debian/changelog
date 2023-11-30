@@ -1,3 +1,10 @@
+bfg (1.0.4) stable; urgency=medium
+
+  [Kevin Kim]
+  * Added delete-files, replace-text options
+
+ -- HamoniKR <pkg@hamonikr.org>  Thu, 30 Nov 2023 09:31:51 +0900
+
 bfg (1.0.3) stable; urgency=medium
 
   [Kevin Kim]
